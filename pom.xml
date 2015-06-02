@@ -10,7 +10,6 @@
 	<name>xo-game</name>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
 		<finalName>xo-game</finalName>
 		<plugins>
