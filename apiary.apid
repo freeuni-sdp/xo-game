@@ -1,0 +1,71 @@
+FORMAT: 1A
+HOST: http://xo-game-sdp.herokuapp.com/webapi
+
+# xo-game
+
+xo-game is a simple API allowing consumers to play classic tic-tac-toe game.
+
+All operations use the game data object. It has following attributes:
+
++ id - unique ID of the game in form of a string, assigned by system
+
+# xo-game API [/]
+
+## Register as a player on the game [POST/{game_id}]
+
+Returns a game state by it's ID if found.
+
++ game_id (required, string, `"0b3211d3-76c6-456d-8971-20aa277bfc76"`) ... ID of the Game is a system generated random string
+
++ Request (application/json)
+
+                {
+                    "user_id" : "sadf554sd-sdf4asd45sa-sadf54sdf-sdf54sa"
+                }
+
++ Response 200
+                
+
+## Make move [PUT/{game_id}]
+
+Place X or O in the specified cell.
+
++ user_id (string) - ID of the user, who has done the move
++ cell (coordinate) - X,Y coordinate of the cell
+
++ Request (application/json)
+
+        {
+            "user_id" : "sadf554sd-sdf4asd45sa-sadf54sdf-sdf54sa",
+            "cell" : [1,2]
+        }
+
++ Response 202 (application/json)
+                
+                {
+                    "status" : 2,
+                    "table" : [[-1, 0, 0],
+                               [1, -1, 0],
+                               [1, 1, -1]],
+                    "winner" : "sadf554sd-sdf4asd45sa-sadf54sdf-sdf54sa"
+                }
+
+## Retrieve game state [GET/{game_id}]
+
+Used for polling
+
++ game_id (string) - ID of an existing game
+
++ Parameters
+    + game_id (required, string, `"0b3211d3-76c6-456d-8971-20aa277bfc76"`) ... ID of the Game is a system generated random string
+
++ Response 200 (application/json)
+
+                {
+                    "status" : 2,
+                    "table" : [[-1, 0, 0],
+                               [1, -1, 0],
+                               [1, 1, -1]],
+                    "winner" : "sadf554sd-sdf4asd45sa-sadf54sdf-sdf54sa"
+                }
+            
