@@ -18,17 +18,14 @@ public class GameServiceTest {
 
 	@Test
 	public void testGetState() {
-//		fail("Not yet implemented");
 	}
 
 	@Test
 	public void testRegisterPlayer() {
-//		fail("Not yet implemented");
 	}
 
 	@Test
 	public void testMakeMove() {
-//		fail("Not yet implemented");
 	}
 
 }

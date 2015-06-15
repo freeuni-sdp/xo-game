@@ -29,6 +29,13 @@ import javax.ws.rs.core.Response.Status;
 @Produces({ MediaType.APPLICATION_JSON })
 public class GameService {
     
+	static final String GAME_EMPTY = "EmptyGame";
+	static final String GAME_RUNNING = "RunningGame";
+	static final String GAME_FINISHED = "FinishedGame";
+	
+	static final String GAME_CLOSED = "ClosedGame";
+	static final String GAME_OPENED = "OpenedGame";
+	
     static final HashMap<String, GameState> games = new HashMap<>();
     static{
         GameState state;
