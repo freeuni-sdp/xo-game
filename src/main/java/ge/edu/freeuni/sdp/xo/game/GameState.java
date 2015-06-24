@@ -5,7 +5,6 @@
  */
 package ge.edu.freeuni.sdp.xo.game;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -73,7 +72,7 @@ public class GameState {
     
     public boolean makeMove(String playerID, int cell){
         if(status != STATUS_RUNNING) return false;
-        if(checkValidCell(cell)) return false;
+        if(!checkValidCell(cell)) return false;
         if(!active.equals(playerID)) return false;
         table.add(cell);
         if(checkWinner(playerID)){
@@ -107,13 +106,14 @@ public class GameState {
         if(active.equals(player1)) active = player2;
         else active = player1;
     }
+
+    private boolean checkValidCell(int cell) {
+        return (!table.contains(cell)) && validCells.contains(cell);
+    }
     
     @Override
     public String toString(){
         return status + ", "+player1+" : "+player2+", "+table+", "+active;
     }
 
-    private boolean checkValidCell(int cell) {
-        return !table.contains(cell) && validCells.contains(cell);
-    }
 }
