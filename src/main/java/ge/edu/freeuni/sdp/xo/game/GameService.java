@@ -27,45 +27,47 @@ import javax.ws.rs.core.Response.Status;
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
 public class GameService {
-    
-    static final HashMap<String, GameState> games = new HashMap<>();
 
-    @GET
-    public GameState getState(@PathParam("gameID") String gameID){
-        GameState state = games.get(gameID);
-        if(state == null)
-            throw new WebApplicationException(Status.NOT_FOUND);
-        return state;
-    }
-    
-    @POST
-    public Response registerPlayer(@PathParam("gameID") String gameID, JsonRequest request){
-        if(request == null || request.user_id == null)
-            throw new WebApplicationException(Status.BAD_REQUEST);
-        
-        GameState state = games.get(gameID);
-        if(state == null){
-            state = new GameState();
-            games.put(gameID, state);
-        }
-        if(state.addPlayer(request.user_id))
-            return Response.ok().build();
-        
-        return Response.status(Status.CONFLICT).build();
-    }
-    
-    @PUT
-    public GameState makeMove(@PathParam("gameID") String gameID, JsonRequest request){
-        if(request == null || request.user_id == null)
-            throw new WebApplicationException(Status.BAD_REQUEST);
-        
-        GameState state = games.get(gameID);
-        if(state == null)
-            throw new WebApplicationException(Status.NOT_FOUND);
-        
-        if(!state.makeMove(request.user_id, request.cell))
-            throw new WebApplicationException(Status.NOT_ACCEPTABLE);
-        
-        return state;
-    }
+	static final HashMap<String, GameState> games = new HashMap<>();
+
+	@GET
+	public GameState getState(@PathParam("gameID") String gameID) {
+		GameState state = games.get(gameID);
+		if (state == null)
+			throw new WebApplicationException(Status.NOT_FOUND);
+		return state;
+	}
+
+	@POST
+	public Response registerPlayer(@PathParam("gameID") String gameID,
+			JsonRequest request) {
+		if (request == null || request.user_id == null)
+			throw new WebApplicationException(Status.BAD_REQUEST);
+
+		GameState state = games.get(gameID);
+		if (state == null) {
+			state = new GameState();
+			games.put(gameID, state);
+		}
+		if (state.addPlayer(request.user_id))
+			return Response.ok().build();
+
+		return Response.status(Status.CONFLICT).build();
+	}
+
+	@PUT
+	public GameState makeMove(@PathParam("gameID") String gameID,
+			JsonRequest request) {
+		if (request == null || request.user_id == null)
+			throw new WebApplicationException(Status.BAD_REQUEST);
+
+		GameState state = games.get(gameID);
+		if (state == null)
+			throw new WebApplicationException(Status.NOT_FOUND);
+
+		if (!state.makeMove(request.user_id, request.cell))
+			throw new WebApplicationException(Status.NOT_ACCEPTABLE);
+
+		return state;
+	}
 }

@@ -14,15 +14,15 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class JsonRequest {
-    @XmlElement
-    String user_id;
-    
-    @XmlElement
-    int cell;
-    
-    @Override
-    public String toString(){
-        return user_id+", "+cell;
-    }
-    
+	@XmlElement
+	String user_id;
+
+	@XmlElement
+	int cell;
+
+	@Override
+	public String toString() {
+		return user_id + ", " + cell;
+	}
+
 }
