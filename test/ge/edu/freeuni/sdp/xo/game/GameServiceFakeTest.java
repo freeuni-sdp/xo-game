@@ -11,7 +11,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class GameServiceTest extends JerseyTest {
+public class GameServiceFakeTest extends JerseyTest {
 
 	@Override
 	protected Application configure() {
