@@ -119,7 +119,15 @@
 			<artifactId>jackson-core</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-mockito-release-full</artifactId>
+			<version>1.5</version>
+			<classifier>full</classifier>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 
 	<properties>

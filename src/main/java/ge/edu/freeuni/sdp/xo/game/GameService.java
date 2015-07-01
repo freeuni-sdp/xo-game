@@ -33,9 +33,8 @@ import javax.ws.rs.core.Response.Status;
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
 public class GameService {
-        private static final String LOGIN_SERVICE_URL = "http://xo-login.herokuapp.com/webapi/login";
-    
-    
+	private static final String LOGIN_SERVICE_URL = "http://xo-login.herokuapp.com/webapi/login";
+
 	static final HashMap<String, GameState> games = new HashMap<>();
 
 	@GET
@@ -51,9 +50,9 @@ public class GameService {
 			JsonRequest request) {
 		if (request == null || request.user_id == null)
 			throw new WebApplicationException(Status.BAD_REQUEST);
-                
-                if(!checkUserId(request.user_id))
-                    throw new WebApplicationException(Status.UNAUTHORIZED);
+
+		if (!checkUserId(request.user_id))
+			throw new WebApplicationException(Status.UNAUTHORIZED);
 
 		GameState state = games.get(gameID);
 		if (state == null) {
@@ -82,22 +81,24 @@ public class GameService {
 		return state;
 	}
 
-        private boolean checkUserId(String user_id) {
-                URL url;
-                try {
-                        url = new URL(LOGIN_SERVICE_URL+"/"+user_id);
-                        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                        con.setRequestMethod("GET");
-                        con.setRequestProperty("Content-Type", "application/json");
-                        con.connect();
-                        boolean res = con.getResponseCode() == 200;
-                        con.disconnect();
-                        return res;
-                } catch (MalformedURLException ex) {
-                        Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                        Logger.getLogger(GameService.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                return false;
-        }
+	private boolean checkUserId(String user_id) {
+		URL url;
+		try {
+			url = new URL(LOGIN_SERVICE_URL + "/" + user_id);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("Content-Type", "application/json");
+			con.connect();
+			boolean res = con.getResponseCode() == 200;
+			con.disconnect();
+			return res;
+		} catch (MalformedURLException ex) {
+			Logger.getLogger(GameService.class.getName()).log(Level.SEVERE,
+					null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(GameService.class.getName()).log(Level.SEVERE,
+					null, ex);
+		}
+		return false;
+	}
 }
