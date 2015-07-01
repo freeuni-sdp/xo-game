@@ -53,7 +53,6 @@ public class GameState {
 	}
 
 	public boolean addPlayer(String playerID) {
-		// TODO check for registered player
 		if (status == STATUS_PENDING) {
 			if (player1 == null)
 				player1 = playerID;
