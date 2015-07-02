@@ -4,7 +4,11 @@ import java.util.HashMap;
 
 public class Games {
 
-	private static final HashMap<String, GameState> games = new HashMap<>();
+	private static HashMap<String, GameState> games = new HashMap<>();
+
+	public Games(HashMap<String, GameState> games) {
+		Games.games = games;
+	}
 
 	public static GameState get(String id) {
 		return games.get(id);

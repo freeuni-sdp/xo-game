@@ -14,6 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class JsonRequest {
+	
 	@XmlElement
 	String user_id;
 

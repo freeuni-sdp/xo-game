@@ -1,8 +1,6 @@
 package ge.edu.freeuni.sdp.xo.game;
 
-import static org.junit.Assert.*;
-
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
@@ -27,6 +25,7 @@ public class GameServiceTest extends JerseyTest {
 
 	private static final String GAME_ID = "828a9e4";
 	private static final String USER_ID_1 = "013a9e6";
+	@SuppressWarnings("unused")
 	private static final String USER_ID_2 = "321b1e4";
 
 	@Override
@@ -47,8 +46,43 @@ public class GameServiceTest extends JerseyTest {
 	}
 
 	@Test
-	public void testPostBadRequest() {
+	public void testPutBadRequest() {
 		Response actual = target(GAME_ID).request().put(
+				Entity.json(new State()));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
+				actual.getStatus());
+	}
+
+	@Test
+	public void testPutRegisterNullPlayer() {
+		JsonRequest jr = new JsonRequest();
+		jr.user_id = null;
+		Response actual = target(GAME_ID).request().put(Entity.json(jr));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
+				actual.getStatus());
+	}
+
+	@Test
+	public void testPutRegisterOnePlayer() {
+		JsonRequest jr = new JsonRequest();
+		jr.user_id = USER_ID_1;
+		Response actual = target(GAME_ID).request().put(Entity.json(jr));
+		assertEquals(Response.Status.NOT_FOUND.getStatusCode(),
+				actual.getStatus());
+	}
+
+	@Test
+	public void testPost() {
+		JsonRequest jr = new JsonRequest();
+		jr.user_id = USER_ID_1;
+		Response actual = target(GAME_ID).request().post(Entity.json(jr));
+		assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(),
+				actual.getStatus());
+	}
+
+	@Test
+	public void testPostBadRequest() {
+		Response actual = target(GAME_ID).request().post(
 				Entity.json(new State()));
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
 				actual.getStatus());
@@ -58,21 +92,9 @@ public class GameServiceTest extends JerseyTest {
 	public void testPostRegisterNullPlayer() {
 		JsonRequest jr = new JsonRequest();
 		jr.user_id = null;
-		Response actual = target(GAME_ID).request().put(Entity.json(jr));
+		Response actual = target(GAME_ID).request().post(Entity.json(jr));
 		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
 				actual.getStatus());
-	}
-
-	@Test
-	public void testPostRegisterOnePlayer() {
-		JsonRequest jr = new JsonRequest();
-		jr.user_id = USER_ID_1;
-		Response actual = target(GAME_ID).request().put(Entity.json(jr));
-	}
-
-	@Test
-	public void testPut() {
-		// TODO: Not yet implemented
 	}
 
 	@XmlRootElement
