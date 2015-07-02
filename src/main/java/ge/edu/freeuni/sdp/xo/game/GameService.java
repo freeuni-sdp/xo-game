@@ -33,6 +33,7 @@ import javax.ws.rs.core.Response.Status;
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
 public class GameService {
+	
 	private static final String LOGIN_SERVICE_URL = "http://xo-login.herokuapp.com/webapi/login";
 
 	static final HashMap<String, GameState> games = new HashMap<>();

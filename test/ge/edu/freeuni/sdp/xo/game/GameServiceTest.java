@@ -5,16 +5,22 @@ import static org.junit.Assert.*;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ GameService.class })
+/* 
+ * Tried this but didn't work.
+ * 
+ * import org.junit.runner.RunWith;
+ * import org.powermock.core.classloader.annotations.PrepareForTest;
+ * import org.powermock.modules.junit4.PowerMockRunner;
+ * 
+ * @RunWith(PowerMockRunner.class)
+ * @PrepareForTest({ GameService.class })
+ */
 public class GameServiceTest extends JerseyTest {
 
 	private static final String GAME_ID = "828a9e4";
@@ -34,6 +40,28 @@ public class GameServiceTest extends JerseyTest {
 	}
 
 	@Test
+	public void testGetExisting() {
+
+	}
+
+	@Test
+	public void testPostBadRequest() {
+		Response actual = target(GAME_ID).request().put(
+				Entity.json(new State()));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
+				actual.getStatus());
+	}
+
+	@Test
+	public void testPostRegisterNullPlayer() {
+		JsonRequest jr = new JsonRequest();
+		jr.user_id = null;
+		Response actual = target(GAME_ID).request().put(Entity.json(jr));
+		assertEquals(Response.Status.BAD_REQUEST.getStatusCode(),
+				actual.getStatus());
+	}
+
+	@Test
 	public void testPostRegisterOnePlayer() {
 		JsonRequest jr = new JsonRequest();
 		jr.user_id = USER_ID_1;
@@ -43,6 +71,11 @@ public class GameServiceTest extends JerseyTest {
 	@Test
 	public void testPut() {
 		// TODO: Not yet implemented
+	}
+
+	@XmlRootElement
+	private static class State {
+
 	}
 
 }
