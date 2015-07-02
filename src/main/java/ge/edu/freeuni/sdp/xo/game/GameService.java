@@ -5,13 +5,8 @@
  */
 package ge.edu.freeuni.sdp.xo.game;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -33,8 +28,6 @@ import javax.ws.rs.core.Response.Status;
 @Consumes({ MediaType.APPLICATION_JSON })
 @Produces({ MediaType.APPLICATION_JSON })
 public class GameService {
-	
-	private static final String LOGIN_SERVICE_URL = "http://xo-login.herokuapp.com/webapi/login";
 
 	static final HashMap<String, GameState> games = new HashMap<>();
 
@@ -83,23 +76,6 @@ public class GameService {
 	}
 
 	private boolean checkUserId(String user_id) {
-		URL url;
-		try {
-			url = new URL(LOGIN_SERVICE_URL + "/" + user_id);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("GET");
-			con.setRequestProperty("Content-Type", "application/json");
-			con.connect();
-			boolean res = con.getResponseCode() == 200;
-			con.disconnect();
-			return res;
-		} catch (MalformedURLException ex) {
-			Logger.getLogger(GameService.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(GameService.class.getName()).log(Level.SEVERE,
-					null, ex);
-		}
-		return false;
+		return ValidatorFactory.getValidator().validate(user_id);
 	}
 }
