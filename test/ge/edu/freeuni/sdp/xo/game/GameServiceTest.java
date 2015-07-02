@@ -68,6 +68,7 @@ public class GameServiceTest extends JerseyTest {
 		JsonRequest jr = new JsonRequest();
 		jr.user_id = USER_ID_1;
 		Response actual = target(GAME_ID).request().put(Entity.json(jr));
+		when(ValidatorFactory.getValidator()).thenReturn(null);
 	}
 
 	@Test

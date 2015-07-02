@@ -5,8 +5,6 @@
  */
 package ge.edu.freeuni.sdp.xo.game;
 
-import java.util.HashMap;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -29,11 +27,15 @@ import javax.ws.rs.core.Response.Status;
 @Produces({ MediaType.APPLICATION_JSON })
 public class GameService {
 
-	static final HashMap<String, GameState> games = new HashMap<>();
+	/*
+	 * Avoiding creating objects at all costs!
+	 * 
+	 * static final HashMap<String, GameState> games = new HashMap<>();
+	 */
 
 	@GET
 	public GameState getState(@PathParam("gameID") String gameID) {
-		GameState state = games.get(gameID);
+		GameState state = Games.get(gameID);
 		if (state == null)
 			throw new WebApplicationException(Status.NOT_FOUND);
 		return state;
@@ -48,10 +50,10 @@ public class GameService {
 		if (!checkUserId(request.user_id))
 			throw new WebApplicationException(Status.UNAUTHORIZED);
 
-		GameState state = games.get(gameID);
+		GameState state = Games.get(gameID);
 		if (state == null) {
 			state = new GameState();
-			games.put(gameID, state);
+			Games.put(gameID, state);
 		}
 		if (state.addPlayer(request.user_id))
 			return Response.ok().build();
@@ -65,7 +67,7 @@ public class GameService {
 		if (request == null || request.user_id == null)
 			throw new WebApplicationException(Status.BAD_REQUEST);
 
-		GameState state = games.get(gameID);
+		GameState state = Games.get(gameID);
 		if (state == null)
 			throw new WebApplicationException(Status.NOT_FOUND);
 

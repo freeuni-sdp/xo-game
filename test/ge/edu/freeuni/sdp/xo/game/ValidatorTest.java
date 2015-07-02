@@ -1,12 +1,11 @@
 package ge.edu.freeuni.sdp.xo.game;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
 public class ValidatorTest {
 
+	@SuppressWarnings("unused")
 	private Validator v;
 
 	@Before
