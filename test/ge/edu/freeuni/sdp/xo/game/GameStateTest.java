@@ -9,11 +9,13 @@ public class GameStateTest {
 
 	@Before
 	public void setUp() throws Exception {
+
 	}
 
 	@Test
 	public void testAddPlayer() {
 		// fail("Not yet implemented");
+		new GameState();
 	}
 
 	@Test

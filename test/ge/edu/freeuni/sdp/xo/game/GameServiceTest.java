@@ -2,6 +2,8 @@ package ge.edu.freeuni.sdp.xo.game;
 
 import static org.junit.Assert.*;
 
+import static org.mockito.Mockito.*;
+
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
