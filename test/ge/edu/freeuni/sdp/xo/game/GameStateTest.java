@@ -50,6 +50,26 @@ public class GameStateTest {
 	}
 
 	@Test
+	public void testMakeMoveDraw() {
+		assertTrue(gs.addPlayer(USER_ID_1));
+		assertTrue(gs.addPlayer(USER_ID_2));
+
+		assertTrue(gs.makeMove(USER_ID_1, 1));
+		assertTrue(gs.makeMove(USER_ID_2, 2));
+		assertTrue(gs.makeMove(USER_ID_1, 4));
+		assertTrue(gs.makeMove(USER_ID_2, 16));
+		assertTrue(gs.makeMove(USER_ID_1, 128));
+		assertTrue(gs.makeMove(USER_ID_2, 8));
+		assertTrue(gs.makeMove(USER_ID_1, 32));
+		assertTrue(gs.makeMove(USER_ID_2, 256));
+		assertTrue(gs.makeMove(USER_ID_1, 64));
+
+		assertEquals("Game didn't finish!", gs.status,
+				GameState.STATUS_FINISHED);
+
+	}
+
+	@Test
 	public void testGetWinner() {
 		gs.winner = WINNER;
 		assertEquals(WINNER, gs.getWinner());

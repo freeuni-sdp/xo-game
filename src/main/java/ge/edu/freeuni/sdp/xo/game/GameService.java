@@ -74,6 +74,13 @@ public class GameService {
 		if (!state.makeMove(request.user_id, request.cell))
 			throw new WebApplicationException(Status.NOT_ACCEPTABLE);
 
+		if (state.status == GameState.STATUS_FINISHED) {
+			String winner = state.getWinner();
+			String player1 = state.getPlayerOne();
+			String player2 = state.getPlayerTwo();
+			UpdaterFactory.getUpdater().update(player1, player2, winner);
+		}
+
 		return state;
 	}
 

@@ -80,7 +80,9 @@ public class GameState {
 		if (checkWinner(playerID)) {
 			winner = playerID;
 			status = STATUS_FINISHED;
-		} else
+		} else if (table.size() == 9)
+			status = STATUS_FINISHED;
+		else
 			switchActivePlayer();
 
 		return true;
@@ -88,6 +90,14 @@ public class GameState {
 
 	public String getWinner() {
 		return winner;
+	}
+
+	public String getPlayerOne() {
+		return player1;
+	}
+
+	public String getPlayerTwo() {
+		return player2;
 	}
 
 	protected boolean checkWinner(String player) {
