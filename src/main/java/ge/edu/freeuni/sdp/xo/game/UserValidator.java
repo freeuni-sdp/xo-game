@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class UserValidator implements Validator {
 
-	private static final String LOGIN_SERVICE_URL = "http://xo-login.herokuapp.com/webapi/login";
+	private static final String LOGIN_SERVICE_URL = "http://xo-login.herokuapp.com/webapi/login/users";
 
 	@Override
 	public boolean validate(String id) {
