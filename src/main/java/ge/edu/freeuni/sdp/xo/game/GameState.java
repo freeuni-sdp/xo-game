@@ -80,9 +80,11 @@ public class GameState {
 		if (checkWinner(playerID)) {
 			winner = playerID;
 			status = STATUS_FINISHED;
-		} else if (table.size() == 9)
+                        Games.finishGame(this);
+		} else if (table.size() == 9){
 			status = STATUS_FINISHED;
-		else
+                        Games.finishGame(this);
+                }else
 			switchActivePlayer();
 
 		return true;
