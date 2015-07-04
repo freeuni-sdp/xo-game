@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class ArchiveUpdater implements Updater {
 
-	private static final String ACHEVE_SERVICE_URL = "http://xo-achiev.herokuapp.com/";
+	private static final String ACHEVE_SERVICE_URL = "http://xo-achiev.herokuapp.com/webapi/";
 
 	@Override
 	public void update(String player1, String player2, String winner) {
@@ -30,7 +30,7 @@ public class ArchiveUpdater implements Updater {
 		URL url;
 		String message;
 		try {
-			url = new URL(ACHEVE_SERVICE_URL + "/" + id);
+			url = new URL(ACHEVE_SERVICE_URL + id);
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
 			con.setRequestMethod("GET");
