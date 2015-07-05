@@ -52,7 +52,7 @@ public class GameService {
 
 		GameState state = Games.get(gameID);
 		if (state == null) {
-			state = new GameState();
+			state = new GameState(gameID);
 			Games.put(gameID, state);
 		}
 		if (state.addPlayer(request.user_id))

@@ -44,6 +44,8 @@ public class GameState {
 	private String player1;
 	private String player2;
 	private String active;
+        private String gameID;
+        private GameState nextGame;
 
 	public GameState() {
 		status = STATUS_PENDING;
@@ -51,8 +53,26 @@ public class GameState {
 		winner = null;
 		player1 = player2 = active = null;
 	}
+        
+        public GameState(String gameID){
+            this();
+            this.gameID = gameID;
+        }
 
 	public boolean addPlayer(String playerID) {
+                if (status == STATUS_FINISHED){
+                        if(nextGame == null)
+                                nextGame = new GameState(gameID);
+
+                        boolean res = nextGame.addPlayer(playerID);
+                        if(nextGame.status == STATUS_RUNNING){
+                                // replace current GameState with nextGame
+                                // after that, current GameState will be deleted
+                                Games.put(gameID, nextGame);
+                        }
+
+                        return res;
+                }
 		if (status == STATUS_PENDING) {
 			if (player1 == null)
 				player1 = playerID;
@@ -80,10 +100,8 @@ public class GameState {
 		if (checkWinner(playerID)) {
 			winner = playerID;
 			status = STATUS_FINISHED;
-                        Games.finishGame(this);
 		} else if (table.size() == 9){
 			status = STATUS_FINISHED;
-                        Games.finishGame(this);
                 }else
 			switchActivePlayer();
 
