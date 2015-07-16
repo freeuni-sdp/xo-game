@@ -1,5 +1,12 @@
 package ge.edu.freeuni.sdp.xo.game;
 
+import org.glassfish.jersey.client.ClientConfig;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -13,67 +20,32 @@ public class ArchiveUpdater implements Updater {
 
 	@Override
 	public void update(String player1, String player2, String winner) {
+		AchievEntity p1Achieve = getScore(player1);
+		AchievEntity p2Achieve = getScore(player2);
+		int p1Score, p2Score;
 		if (winner == null) {
-			setScore(player1, getScore(player1) + 2);
-			setScore(player2, getScore(player2) + 2);
+			p1Score = p2Score = 2;
 		} else if (player1.equals(winner)) {
-			setScore(player1, getScore(player1) + 3);
-			setScore(player2, getScore(player2) + 1);
-		} else if (player2.equals(winner)) {
-			setScore(player1, getScore(player1) + 1);
-			setScore(player2, getScore(player2) + 3);
+			p1Score = 3;
+			p2Score = 1;
+		} else {
+			p1Score = 1;
+			p2Score = 3;
 		}
+		setScore(player1, p1Achieve.getScore() + p1Score);
+		setScore(player2, p2Achieve.getScore() + p2Score);
 
 	}
 
-	private int getScore(String id) {
-		URL url;
-		String message;
-		try {
-			url = new URL(ACHEVE_SERVICE_URL + id);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-			con.setRequestMethod("GET");
-			con.setRequestProperty("Content-Type", "application/json");
-			con.connect();
-			if (con.getResponseCode() == 200) {
-				message = con.getResponseMessage();
-				return parse(message);
-			}
-			con.disconnect();
-		} catch (MalformedURLException ex) {
-			Logger.getLogger(GameService.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(GameService.class.getName()).log(Level.SEVERE,
-					null, ex);
-		}
-		return 0;
-	}
-
-	private int parse(String message) {
-		// TODO: Parse response!
-		return 0;
+	private AchievEntity getScore(String id) {
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		return client.target(ACHEVE_SERVICE_URL + id).request().get(AchievEntity.class);
 	}
 
 	private void setScore(String id, int score) {
-		URL url;
-		try {
-			url = new URL(ACHEVE_SERVICE_URL + "/" + id);
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-
-			con.setRequestMethod("PUT");
-			con.setRequestProperty("Content-Type", "application/json");
-			con.connect();
-			// TODO: Send request!
-			con.disconnect();
-		} catch (MalformedURLException ex) {
-			Logger.getLogger(GameService.class.getName()).log(Level.SEVERE,
-					null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(GameService.class.getName()).log(Level.SEVERE,
-					null, ex);
-		}
+		String payload = "{\"score\": "+score+"}";
+		Client client = ClientBuilder.newClient(new ClientConfig());
+		Response response = client.target(ACHEVE_SERVICE_URL + id).request().put(Entity.json(payload));
 	}
 
 }
