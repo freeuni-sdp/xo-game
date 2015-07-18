@@ -38,12 +38,14 @@ public class GameService {
 		GameState state = Games.get(gameID);
 		if (state == null)
 			throw new WebApplicationException(Status.NOT_FOUND);
+                state.resetTimer();
 		return state;
 	}
 
 	@POST
 	public Response registerPlayer(@PathParam("gameID") String gameID,
 			JsonRequest request) {
+            System.out.println("request: "+request);
 		if (request == null || request.user_id == null)
 			throw new WebApplicationException(Status.BAD_REQUEST);
 
@@ -53,6 +55,7 @@ public class GameService {
 		GameState state = Games.get(gameID);
 		if (state == null) {
 			state = new GameState(gameID);
+                        state.resetTimer();
 			Games.put(gameID, state);
 		}
 		if (state.addPlayer(request.user_id))
@@ -71,6 +74,7 @@ public class GameService {
 		if (state == null)
 			throw new WebApplicationException(Status.NOT_FOUND);
 
+                state.resetTimer();
 		if (!state.makeMove(request.user_id, request.cell))
 			throw new WebApplicationException(Status.NOT_ACCEPTABLE);
 

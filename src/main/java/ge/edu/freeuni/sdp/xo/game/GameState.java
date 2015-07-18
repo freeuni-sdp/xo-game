@@ -9,6 +9,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -46,6 +52,11 @@ public class GameState {
 	private String active;
         private String gameID;
         private GameState nextGame;
+        
+        private Runnable tableCleanup;
+        private ScheduledExecutorService scheduler;
+        private ScheduledFuture future;
+        private static final long IDLE_TIME_TO_KILL_minutes = 5; // 5 minutes
 
 	public GameState() {
 		status = STATUS_PENDING;
@@ -55,8 +66,18 @@ public class GameState {
 	}
         
         public GameState(String gameID){
-            this();
-            this.gameID = gameID;
+                this();
+                this.gameID = gameID;
+            
+                scheduler = Executors.newSingleThreadScheduledExecutor();
+                tableCleanup = new Runnable() {
+
+                        @Override
+                        public void run() {
+                                Games.remove(GameState.this.gameID);
+                                GameState.this.scheduler.shutdown();
+                        }
+                };
         }
 
 	public boolean addPlayer(String playerID) {
@@ -119,6 +140,13 @@ public class GameState {
 	public String getPlayerTwo() {
 		return player2;
 	}
+        
+        public void resetTimer() {
+                if(future != null)
+                        future.cancel(true);
+
+                future = scheduler.schedule(tableCleanup, IDLE_TIME_TO_KILL_minutes, TimeUnit.MINUTES);
+        }
 
 	protected boolean checkWinner(String player) {
 		int i = player.equals(player1) ? 0 : 1;

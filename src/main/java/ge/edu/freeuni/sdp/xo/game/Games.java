@@ -18,4 +18,8 @@ public class Games {
 		games.put(id, state);
 	}
         
+        public static void remove(String id){
+                games.remove(id);
+        }
+        
 }
